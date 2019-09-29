@@ -32,9 +32,9 @@ package:
 
 functions:
   migrate:
-    handler: com.rp.data.core.migrator.controller.MigrationHandler
+    handler: com.ajhelsby.migrator.controller.MigrationHandler
   clean:
-    handler: com.rp.data.core.migrator.controller.CleanHandler
+    handler: com.ajhelsby.migrator.controller.CleanHandler
 
 # Don't deploy the clean handler if we are not on the AWS DEV account
 custom:

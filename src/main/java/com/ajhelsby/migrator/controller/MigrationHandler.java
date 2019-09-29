@@ -4,10 +4,9 @@ import java.util.Map;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.rp.data.core.migrator.config.FlywayConfig;
-import com.rp.data.core.migrator.model.ApiGatewayResponse;
-import com.rp.data.core.migrator.model.DBType;
-import com.rp.data.core.migrator.model.MigrationResponses;
+import com.ajhelsby.migrator.config.FlywayConfig;
+import com.ajhelsby.migrator.model.ApiGatewayResponse;
+import com.ajhelsby.migrator.model.MigrationResponses;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.flywaydb.core.Flyway;
@@ -30,17 +29,11 @@ public class MigrationHandler implements RequestHandler<Map<String, Object>, Api
     final public ApiGatewayResponse handleRequest(final Map<String, Object> input, final Context context) {
         LOGGER.info("Starting db schema migration");
 
-        LOGGER.info("Attempting to migrate master db");
-        FlywayConfig masterFlywayConfig = new FlywayConfig(DBType.MASTER);
+        LOGGER.info("Attempting to migrate db");
+        FlywayConfig masterFlywayConfig = new FlywayConfig();
         Flyway masterFlyway = masterFlywayConfig.configure();
         masterFlyway.migrate();
-        LOGGER.info("Successfully migrated master db");
-
-        LOGGER.info("Attempting to migrate staging db");
-        FlywayConfig stagingFlywayConfig = new FlywayConfig(DBType.STAGING);
-        Flyway stagingFlyway = stagingFlywayConfig.configure();
-        stagingFlyway.migrate();
-        LOGGER.info("Successfully migrated staging db");
+        LOGGER.info("Successfully migrated db");
 
         return MigrationResponses.successfulResponse("Successfully migrated db", input);
     }

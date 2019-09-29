@@ -2,10 +2,10 @@ package com.ajhelsby.migrator.controller;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.rp.data.core.migrator.config.FlywayConfig;
-import com.rp.data.core.migrator.model.ApiGatewayResponse;
-import com.rp.data.core.migrator.model.DBType;
-import com.rp.data.core.migrator.model.MigrationResponses;
+import com.ajhelsby.migrator.config.FlywayConfig;
+import com.ajhelsby.migrator.model.ApiGatewayResponse;
+import com.ajhelsby.migrator.model.DBType;
+import com.ajhelsby.migrator.model.MigrationResponses;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.flywaydb.core.Flyway;
@@ -31,18 +31,11 @@ public class CleanHandler implements RequestHandler<Map<String, Object>, ApiGate
         LOGGER.info("Starting db schema clean and migration");
 
         LOGGER.info("Attempting to clean and migrate master db");
-        FlywayConfig masterFlywayConfig = new FlywayConfig(DBType.MASTER);
+        FlywayConfig masterFlywayConfig = new FlywayConfig();
         Flyway masterFlyway = masterFlywayConfig.configure();
         masterFlyway.clean();
         masterFlyway.migrate();
-        LOGGER.info("Successfully cleaned and migrated master db");
-
-        LOGGER.info("Attempting to clean and migrate staging db");
-        FlywayConfig stagingFlywayConfig = new FlywayConfig(DBType.STAGING);
-        Flyway stagingFlyway = stagingFlywayConfig.configure();
-        stagingFlyway.clean();
-        stagingFlyway.migrate();
-        LOGGER.info("Successfully cleaned ad migrated staging db");
+        LOGGER.info("Successfully cleaned and migrated db");
 
         return MigrationResponses.successfulResponse("Successfully cleaned and migrated db", input);
     }

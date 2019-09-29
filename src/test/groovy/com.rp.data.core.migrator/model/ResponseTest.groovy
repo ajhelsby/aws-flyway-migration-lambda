@@ -1,4 +1,4 @@
-package com.rp.data.core.migrator.model
+package com.ajhelsby.migrator.model
 
 import spock.lang.Specification
 

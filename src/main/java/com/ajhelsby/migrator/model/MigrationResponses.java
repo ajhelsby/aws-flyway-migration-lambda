@@ -1,4 +1,4 @@
-package com.rp.data.core.migrator.model;
+package com.ajhelsby.migrator.model;
 
 import java.util.Collections;
 import java.util.Map;
