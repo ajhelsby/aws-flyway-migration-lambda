@@ -1,0 +1,10 @@
+{
+  "name": "aws-flyway-migration-lambda",
+  "version": "0.0.1",
+  "author": "ajhelsby",
+  "devDependencies": {
+    "serverless": "^1.38.0",
+    "serverless-pseudo-parameters": "2.4.0",
+    "serverless-plugin-ifelse": "1.0.4"
+  }
+}

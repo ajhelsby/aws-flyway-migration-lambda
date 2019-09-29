@@ -1,0 +1,48 @@
+service: aws-flyway-migration-lambda
+
+provider:
+  name: aws
+  runtime: java8
+  stage: ${opt:stage,'dev'}
+  timeout: 60
+  iamRoleStatements:
+  - Effect: "Allow"
+    Action:
+    - "rds:*"
+    - "ec2:CreateNetworkInterface"
+    - "ec2:DescribeNetworkInterfaces"
+    - "ec2:DeleteNetworkInterface"
+    Resource:
+    - "arn:aws:rds:${opt:region}:${opt:accountId}:db:${opt:stage}-master-db"
+  vpc:
+    securityGroupIds: { 'Fn::Split': [ ",", "${ssm:/infra/network/security_group}" ] }
+    subnetIds: { 'Fn::Split': [ ",", "${ssm:/infra/network/internal_subnets}" ] }
+  environment:
+    MASTER_DB_URL: jdbc:postgresql://${ssm:/${opt:stage}/database/master/fqdn}
+    MASTER_DB_NAME: "master"
+    MASTER_DB_USERNAME: ${ssm:/${opt:stage}/database/master/username}
+    MASTER_DB_PASSWORD: ${ssm:/${opt:stage}/database/master/password~true}
+    STAGING_DB_URL: jdbc:postgresql://${ssm:/${opt:stage}/database/staging/fqdn}
+    STAGING_DB_NAME: "staging"
+    STAGING_DB_USERNAME: ${ssm:/${opt:stage}/database/staging/username}
+    STAGING_DB_PASSWORD: ${ssm:/${opt:stage}/database/staging/password~true}
+
+package:
+  artifact: target/migrator-1.0.jar
+
+functions:
+  migrate:
+    handler: com.rp.data.core.migrator.controller.MigrationHandler
+  clean:
+    handler: com.rp.data.core.migrator.controller.CleanHandler
+
+# Don't deploy the clean handler if we are not on the AWS DEV account
+custom:
+  serverlessIfElse:
+    - If: '"${opt:accountId}" != "Todo"'
+      Exclude:
+        - functions.clean
+
+plugins:
+  - serverless-plugin-ifelse
+  - serverless-pseudo-parameters
