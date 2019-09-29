@@ -1,4 +1,0 @@
-functions:
-  migrate:
-    deploy: true
-    existingS3: false
