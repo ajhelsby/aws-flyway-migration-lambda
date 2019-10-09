@@ -1,6 +1,6 @@
 # AWS Lambda Database Schema Migration
 
-The database migrator is a java serverless application that can be used to make changes to the master records database 
+The database migrator is a java serverless application that can be used to make changes to the a database 
 schema. SQL-based migrations are typically used for:
 
 1. DDL changes (CREATE/ALTER/DROP statements for TABLES,VIEWS,TRIGGERS,SEQUENCES,…)
@@ -26,7 +26,6 @@ The Flyway documentation link below describes the mechanism behind the 3 types o
 image above:<br />
 [Flyway documentation](https://flywaydb.org/documentation/migrations)
 
+## Deploying the function
+
 ## Running the migration
-The migration is automatically run during the deployment stage of the pipeline. However the migration can also be 
-manually triggered by executing the lambda through the aws console. No parameters are requested to initiate the 
-serverless function.
