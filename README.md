@@ -1,6 +1,6 @@
 # AWS Lambda Database Schema Migration
 
-The database migrator is a java serverless application that can be used to make changes to the a database 
+The database migrator is a java serverless application that can be used to make changes to a database 
 schema. SQL-based migrations are typically used for:
 
 1. DDL changes (CREATE/ALTER/DROP statements for TABLES,VIEWS,TRIGGERS,SEQUENCES,…)
